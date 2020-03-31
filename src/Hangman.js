@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { randomWord } from "./words";
+import AlphaButtons from "./AlphaButtons";
 import "./Hangman.css";
 import img0 from "./0.jpg";
 import img1 from "./1.jpg";
@@ -17,8 +19,9 @@ class Hangman extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { nWrong: 0, guessed: new Set(), answer: "apple" };
+    this.state = { nWrong: 0, guessed: new Set(), answer: randomWord() };
     this.handleGuess = this.handleGuess.bind(this);
+    this.restart = this.restart.bind(this);
   }
 
   /** guessedWord: show current-state of word:
@@ -45,14 +48,23 @@ class Hangman extends Component {
   /** generateButtons: return array of letter buttons to render */
   generateButtons() {
     return "abcdefghijklmnopqrstuvwxyz".split("").map(ltr => (
-      <button
+      <AlphaButtons
+        key={ltr}
         value={ltr}
-        onClick={this.handleGuess}
-        disabled={this.state.guessed.has(ltr)}
+        handleGuess={this.handleGuess}
+        handleDisabled={this.state.guessed.has(ltr)}
       >
         {ltr}
-      </button>
+      </AlphaButtons>
     ));
+  }
+
+  restart() {
+    this.setState(st => ({
+      nWrong: 0,
+      guessed: new Set(),
+      answer: randomWord()
+    }))
   }
 
   /** render: render game */
@@ -60,9 +72,20 @@ class Hangman extends Component {
     return (
       <div className='Hangman'>
         <h1>Hangman</h1>
-        <img src={this.props.images[this.state.nWrong]} />
-        <p className='Hangman-word'>{this.guessedWord()}</p>
-        <p className='Hangman-btns'>{this.generateButtons()}</p>
+        <img src={this.props.images[this.state.nWrong]} alt={`${this.state.nWrong}/${this.props.maxWrong} wrong guesses`}/>
+        <p>Number wrong: {this.state.nWrong}</p>
+        {this.state.nWrong < this.props.maxWrong ? (
+          <div className="Hangman-guessing">
+            <p className='Hangman-word'>{this.guessedWord()}</p>
+            <p className='Hangman-btns'>{this.generateButtons()}</p>
+          </div>
+        ) : (
+          <div className="Hangman-lose">
+            <p className='Hangman-word'>{this.state.answer}</p>
+            <p>You lose</p>
+            <button onClick={this.restart}>Restart</button>
+          </div>
+        )}
       </div>
     );
   }
