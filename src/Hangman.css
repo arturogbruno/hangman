@@ -2,7 +2,7 @@
   width: 400px;
   color: black;
   text-align: center;
-  zoom: 1.3;
+  zoom: 1.2;
 }
 
 .Hangman img {
@@ -12,7 +12,7 @@
 }
 
 .Hangman h1 {
-  font-size: 4rem;
+  font-size: 2.5rem;
   font-weight: 100;
   margin-bottom: 0.1em;
   margin-top: 0;
@@ -57,7 +57,7 @@
   box-shadow: 0 6px #9e9e9e;
 }
 
-.Hangman-lose button {
+#restart {
   border: none;
   font-family: inherit;
   font-size: 1rem;
@@ -73,6 +73,6 @@
   padding-top: 4px;
 }
 
-.Hangman-lose button:hover {
+#restart:hover {
   background-color: #ff9800;
 }

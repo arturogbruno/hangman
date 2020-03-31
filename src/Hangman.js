@@ -60,30 +60,34 @@ class Hangman extends Component {
   }
 
   restart() {
-    this.setState(st => ({
-      nWrong: 0,
-      guessed: new Set(),
-      answer: randomWord()
-    }))
+    this.setState({ nWrong: 0, guessed: new Set(), answer: randomWord() });
   }
 
   /** render: render game */
   render() {
+    console.log(this.state.answer);
     return (
       <div className='Hangman'>
         <h1>Hangman</h1>
         <img src={this.props.images[this.state.nWrong]} alt={`${this.state.nWrong}/${this.props.maxWrong} wrong guesses`}/>
-        <p>Number wrong: {this.state.nWrong}</p>
+        <p>Guessed wrong: {this.state.nWrong}</p>
         {this.state.nWrong < this.props.maxWrong ? (
           <div className="Hangman-guessing">
             <p className='Hangman-word'>{this.guessedWord()}</p>
-            <p className='Hangman-btns'>{this.generateButtons()}</p>
+            {this.guessedWord().join("") === this.state.answer ? (
+              <div>
+                <p>You win!</p>
+                <button id="restart" onClick={this.restart}>Restart</button>
+              </div>
+            ) : (
+              <p className='Hangman-btns'>{this.generateButtons()}</p>
+            )}
           </div>
         ) : (
-          <div className="Hangman-lose">
+          <div>
             <p className='Hangman-word'>{this.state.answer}</p>
             <p>You lose</p>
-            <button onClick={this.restart}>Restart</button>
+            <button id="restart" onClick={this.restart}>Restart</button>
           </div>
         )}
       </div>
